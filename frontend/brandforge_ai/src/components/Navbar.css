@@ -1,0 +1,151 @@
+@import url("https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@300;400;500;600;700&display=swap");
+
+.navbar-pill {
+  position: fixed;
+  top: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 1000;
+  width: 90%;
+  max-width: 900px;
+}
+
+.navbar-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 24px;
+  background: #0f0f0f;
+  border: 1px solid #2a2a2a;
+  border-radius: 50px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+  font-family: "IBM Plex Mono", monospace;
+  transition: all 0.3s ease;
+}
+
+.navbar-container:hover {
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+}
+
+.navbar-logo {
+  font-size: 16px;
+  font-weight: 600;
+  color: #ffffff;
+  letter-spacing: 1px;
+  min-width: fit-content;
+}
+
+.navbar-links {
+  display: flex;
+  gap: 8px;
+  flex: 1;
+  justify-content: center;
+  margin: 0 24px;
+}
+
+.navbar-link {
+  background: none;
+  border: none;
+  font-size: 14px;
+  font-weight: 400;
+  color: #a0a0a0;
+  cursor: pointer;
+  font-family: "IBM Plex Mono", monospace;
+  transition: all 0.3s ease;
+  padding: 6px 16px;
+  position: relative;
+  letter-spacing: 0.5px;
+  border-radius: 20px;
+}
+
+.navbar-link:hover {
+  color: #92FE9D;
+  transform: translateY(-1px);
+}
+
+.navbar-link.active {
+  background: #92FE9D;
+  color: #000000;
+  box-shadow: 0 4px 12px #2c452f;
+}
+
+.navbar-link.active:hover {
+  background: #92FE9D;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px #2c452f;
+}
+
+.navbar-generate {
+  background: #92FE9D;
+  border: none;
+  color: rgb(0, 0, 0);
+  padding: 8px 20px;
+  border-radius: 24px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  font-family: "IBM Plex Mono", monospace;
+  transition: all 0.3s ease;
+  letter-spacing: 0.5px;
+  box-shadow: 0 4px 12px #2c452f;
+}
+
+.navbar-generate:hover {
+  background: #92FE9D;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px #2c452f;
+}
+
+.navbar-generate:active {
+  transform: translateY(0);
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+  .navbar-pill {
+    top: 10px;
+    width: 95%;
+  }
+
+  .navbar-container {
+    padding: 10px 16px;
+  }
+
+  .navbar-logo {
+    font-size: 14px;
+  }
+
+  .navbar-links {
+    gap: 4px;
+    margin: 0 16px;
+  }
+
+  .navbar-link {
+    font-size: 12px;
+    padding: 4px 12px;
+  }
+
+  .navbar-generate {
+    padding: 6px 16px;
+    font-size: 12px;
+  }
+}
+
+@media (max-width: 600px) {
+  .navbar-links {
+    display: none;
+  }
+
+  .navbar-container {
+    justify-content: space-between;
+  }
+
+  .navbar-logo {
+    font-size: 13px;
+  }
+
+  .navbar-generate {
+    padding: 6px 14px;
+    font-size: 11px;
+  }
+}

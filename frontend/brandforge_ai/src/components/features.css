@@ -1,0 +1,128 @@
+@import url("https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@300;400;500;600;700&display=swap");
+
+.features-section {
+  padding-bottom: 20px;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background-color: #121212;
+  position: relative;
+  z-index: 5;
+}
+
+.features-heading {
+  font-family: "IBM Plex Mono", monospace;
+  font-size: 48px;
+  font-weight: 600;
+  color: #ffffff;
+  margin-bottom: 60px;
+  letter-spacing: -0.5px;
+  text-align: center;
+}
+
+.features-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 24px;
+  max-width: 1200px;
+  width: 100%;
+  padding: 0 20px;
+}
+
+@media (min-width: 768px) {
+  .features-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+.feature-card {
+  position: relative;
+  border-radius: 16px;
+  border: 0.5px solid rgba(255, 255, 255, 0.1);
+  background-color: #0f0f0f;
+  padding: 32px;
+  overflow: hidden;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  --mouse-x: 50%;
+  --mouse-y: 50%;
+  min-height: 300px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.feature-card::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: radial-gradient(
+    circle 400px at var(--mouse-x) var(--mouse-y),
+    #00506754,
+    transparent 80%
+  );
+  opacity: 0;
+  transition: opacity 0.5s ease;
+  pointer-events: none;
+}
+
+.feature-card:hover::before {
+  opacity: 1;
+}
+
+.feature-card:hover {
+  border-color: rgba(255, 255, 255, 0.15);
+  background-color: rgba(15, 15, 15, 0.8);
+  transform: translateY(-4px);
+  box-shadow: 0 8px 32px rgba(30, 80, 150, 0.15);
+}
+
+.feature-card-content {
+  position: relative;
+  z-index: 1;
+  text-align: center;
+}
+
+.feature-card-title {
+  font-family: "IBM Plex Mono", monospace;
+  font-size: 20px;
+  font-weight: 600;
+  color: #ffffff;
+  margin: 0 0 16px 0;
+  letter-spacing: 0.3px;
+}
+
+.feature-card-description {
+  font-family: "IBM Plex Mono", monospace;
+  font-size: 14px;
+  font-weight: 300;
+  color: #d0d0d0;
+  line-height: 1.6;
+  margin: 0;
+  letter-spacing: 0.2px;
+}
+
+@media (max-width: 768px) {
+  .features-heading {
+    font-size: 36px;
+    margin-bottom: 40px;
+  }
+
+  .feature-card {
+    padding: 24px;
+    min-height: 280px;
+  }
+
+  .feature-card-title {
+    font-size: 18px;
+  }
+
+  .feature-card-description {
+    font-size: 13px;
+  }
+}

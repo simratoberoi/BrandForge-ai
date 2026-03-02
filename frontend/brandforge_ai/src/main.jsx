@@ -4,16 +4,123 @@ import "./index.css";
 import Aurora from "./hero.jsx";
 import Navbar from "./components/navbar.jsx";
 import HeroSection from "./components/HeroSection.jsx";
+import Features from "./components/features.jsx";
+import Masonry from "./components/masonary";
+import Footer from "./components/footer";
+
+const items = [
+  {
+    id: 1,
+    img: "https://cdn.dribbble.com/userupload/9777850/file/original-c53926f45c3b5a4eaa506e046628d9d1.jpg?resize=1504x1128&vertical=center",
+    height: 800,
+    url: "#",
+  },
+  {
+    id: 10,
+    img: "https://brand.rochester.edu/wp-content/uploads/2025/09/BrandLaunch_Thumbnails_1600x1066Color.png",
+    height: 800,
+    url: "#",
+  },
+
+  {
+    id: 2,
+    img: "https://cdn.dribbble.com/userupload/7601218/file/original-4985fbd6fa7cd5977b59888acb37ad4e.png?resize=1504x1128&vertical=center",
+    height: 800,
+    url: "#",
+  },
+
+  {
+    id: 12,
+    img: "https://mir-s3-cdn-cf.behance.net/projects/404/1112ea176803133.Y3JvcCwxNTM1LDEyMDEsNzYsMA.jpg",
+    height: 800,
+    url: "#",
+  },
+  {
+    id: 4,
+    img: "https://cdn.dribbble.com/userupload/16481989/file/original-453cfb7e8214bd2bb2f6bb426f6cde3d.png?resize=1504x1128&vertical=center",
+    height: 800,
+    url: "#",
+  },
+
+  {
+    id: 6,
+    img: "https://cdn.dribbble.com/userupload/44462202/file/b564a66c232eeca261e8c7368c776373.png?resize=1024x776&vertical=center",
+    height: 700,
+    url: "#",
+  },
+  {
+    id: 7,
+    img: "https://cdn.dribbble.com/userupload/29127079/file/original-a9dc166ffd94de259df67c117c856821.png?resize=1504x1128&vertical=center",
+    height: 800,
+    url: "#",
+  },
+  {
+    id: 8,
+    img: "https://cdn.dribbble.com/userupload/24886939/file/original-625f73e5175f59373367b7248246e473.jpg?resize=1504x1128&vertical=center",
+    height: 800,
+    url: "#",
+  },
+  {
+    id: 3,
+    img: "https://cdn.dribbble.com/userupload/40321183/file/original-9d8d5f18fbbe04388be34aa0a04a6ae6.png?resize=1504x1128&vertical=center",
+    height: 800,
+    url: "#",
+  },
+  {
+    id: 9,
+    img: "https://cdn.dribbble.com/userupload/37300610/file/original-43475f9d86d03553f4a87eb4af43c096.jpg?resize=1504x1128&vertical=center",
+    height: 800,
+    url: "#",
+  },
+
+  {
+    id: 11,
+    img: "https://mir-s3-cdn-cf.behance.net/project_modules/1400/5bf3bf156337333.63651adc6a74f.jpg",
+    height: 800,
+    url: "#",
+  },
+  {
+    id: 5,
+    img: "https://cdn.dribbble.com/userupload/24288238/file/original-a98b79c51cf90c9b45d51da8e902d742.png?resize=1504x1128&vertical=center",
+    height: 800,
+    url: "#",
+  },
+];
 
 createRoot(document.getElementById("root")).render(
   <StrictMode>
     <Navbar />
-    <Aurora
-      colorStops={["#00C9FF", "#92FE9D", "#00C9FF"]}
-      blend={0.5}
-      amplitude={1.0}
-      speed={1}
-    />
-    <HeroSection />
+    <div style={{ width: "100%", minHeight: "100vh", position: "relative" }}>
+      <Aurora
+        colorStops={["#00C9FF", "#92FE9D", "#00C9FF"]}
+        blend={0.5}
+        amplitude={1.0}
+        speed={1}
+      />
+      <HeroSection />
+    </div>
+    <Features />
+    <section
+      id="gallery"
+      style={{
+        width: "100%",
+        backgroundColor: "#121212",
+        padding: "80px 20px",
+        minHeight: "100vh",
+      }}
+    >
+      <Masonry
+        items={items}
+        ease="power3.out"
+        duration={0.6}
+        stagger={0.05}
+        animateFrom="bottom"
+        scaleOnHover
+        hoverScale={0.95}
+        blurToFocus
+        colorShiftOnHover={false}
+      />
+    </section>
+    <Footer />
   </StrictMode>,
 );

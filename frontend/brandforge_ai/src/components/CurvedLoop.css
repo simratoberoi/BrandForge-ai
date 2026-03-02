@@ -1,0 +1,38 @@
+@import url("https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@300;400;500;600;700&display=swap");
+
+.curved-loop-jacket {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 200px;
+  padding: 40px 20px;
+}
+
+.curved-loop-svg {
+  user-select: none;
+  width: 100%;
+  max-width: 1200px;
+  aspect-ratio: 100 / 12;
+  overflow: visible;
+  display: block;
+  font-size: 3.5rem;
+  fill: white;
+  font-family: "IBM Plex Mono", monospace;
+  font-weight: 700;
+  text-transform: uppercase;
+  line-height: 1;
+  letter-spacing: 0.1em;
+  filter: drop-shadow(0 0 20px rgba(146, 254, 157, 0.3));
+}
+
+@media (max-width: 768px) {
+  .curved-loop-svg {
+    font-size: 2rem;
+  }
+
+  .curved-loop-jacket {
+    height: 120px;
+    padding: 20px;
+  }
+}

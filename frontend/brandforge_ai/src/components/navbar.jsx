@@ -6,7 +6,7 @@ export default function Navbar() {
 
   useEffect(() => {
     const handleScroll = () => {
-      const sections = ["home", "features", "contact"];
+      const sections = ["home", "features", "gallery"];
       let currentSection = "home";
 
       for (let section of sections) {
@@ -53,10 +53,10 @@ export default function Navbar() {
             Features
           </button>
           <button
-            className={`navbar-link ${activeSection === "contact" ? "active" : ""}`}
-            onClick={() => scrollToSection("contact")}
+            className={`navbar-link ${activeSection === "gallery" ? "active" : ""}`}
+            onClick={() => scrollToSection("gallery")}
           >
-            Contact Us
+            Gallery
           </button>
         </div>
 

@@ -111,7 +111,7 @@ void main() {
 
 export default function Aurora(props) {
   const {
-    colorStops = ["#5227FF", "#7cff67", "#5227FF"],
+    colorStops = ["#00C9FF", "#92FE9D", "#00C9FF"],
     amplitude = 1.0,
     blend = 0.5,
   } = props;

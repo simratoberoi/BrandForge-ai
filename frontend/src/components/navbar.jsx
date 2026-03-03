@@ -1,8 +1,10 @@
 import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import "./Navbar.css";
 
 export default function Navbar() {
   const [activeSection, setActiveSection] = useState("home");
+  const navigate = useNavigate();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -34,6 +36,10 @@ export default function Navbar() {
     setActiveSection(id);
   };
 
+  const handleSignUp = () => {
+    navigate("/login");
+  };
+
   return (
     <nav className="navbar-pill">
       <div className="navbar-container">
@@ -60,7 +66,9 @@ export default function Navbar() {
           </button>
         </div>
 
-        <button className="navbar-generate">Generate</button>
+        <button className="navbar-generate" onClick={handleSignUp}>
+          Log In
+        </button>
       </div>
     </nav>
   );

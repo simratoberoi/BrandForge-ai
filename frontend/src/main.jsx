@@ -4,7 +4,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import "./index.css";
 import Navbar from "./components/navbar.jsx";
 import Home from "./Home.jsx";
-import Login from "./components/Login.jsx";
+import Login from "./Login.jsx";
 
 const HomeWithNav = () => (
   <>

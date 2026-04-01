@@ -5,6 +5,7 @@ import "./index.css";
 import Navbar from "./components/navbar.jsx";
 import Home from "./Home.jsx";
 import Login from "./Login.jsx";
+import Generate from "./Generate.jsx";
 
 const HomeWithNav = () => (
   <>
@@ -19,6 +20,7 @@ createRoot(document.getElementById("root")).render(
       <Routes>
         <Route path="/" element={<HomeWithNav />} />
         <Route path="/login" element={<Login />} />
+        <Route path="/generate" element={<Generate />} />
       </Routes>
     </BrowserRouter>
   </StrictMode>,

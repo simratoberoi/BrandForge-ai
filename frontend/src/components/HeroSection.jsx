@@ -1,6 +1,13 @@
 import "./HeroSection.css";
+import { useNavigate } from "react-router-dom";
 
 export default function HeroSection() {
+  const navigate = useNavigate();
+
+  const handleGeneration = () => {
+    navigate("/generate");
+  };
+
   const scrollToSection = (id) => {
     const element = document.getElementById(id);
     if (element) {
@@ -23,10 +30,7 @@ export default function HeroSection() {
         </p>
 
         <div className="hero-buttons">
-          <button
-            className="btn btn-primary"
-            onClick={() => scrollToSection("features")}
-          >
+          <button className="btn btn-primary" onClick={handleGeneration}>
             Start Forging
           </button>
           <button

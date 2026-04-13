@@ -21,7 +21,7 @@ export default function Footer() {
   return (
     <footer className="footer" id="footer">
       <CurvedLoop
-        marqueeText="BrandForge • Crafting Digital Identities • AI-Powered Design Solutions • "
+        marqueeText="BrandForge • AI Product Mockups • Lifestyle Scenes • Studio Ads • Landing Page Heroes • Social Creatives • "
         speed={2}
         className="footer-marquee"
         curveAmount={250}
@@ -34,10 +34,10 @@ export default function Footer() {
           <div className="footer-section">
             <h3 className="footer-title">About</h3>
             <p className="footer-description">
-              BrandForge is a demonstration project created for educational and
-              practice purposes. This platform showcases advanced web design
-              techniques and AI-powered branding concepts in a futuristic
-              environment.
+              BrandForge helps teams transform simple product photos into
+              campaign-ready visuals. Generate mockups, ad concepts, and
+              channel-specific creatives without running a full production
+              shoot.
             </p>
           </div>
 
@@ -67,13 +67,10 @@ export default function Footer() {
 
         <div className="footer-bottom">
           <p className="footer-text">
-            © 2026 BrandForge. This project is maintained solely for educational
-            and portfolio development purposes. All design elements and
-            functionalities are demonstrations of web development capabilities.
+            © 2026 BrandForge. Built to accelerate product marketing design with
+            AI-generated creatives for web, social, and performance campaigns.
           </p>
-          <p className="footer-credit">
-            Designed & developed for practice and learning.
-          </p>
+          <p className="footer-credit">Designed for modern product teams.</p>
         </div>
       </div>
     </footer>

@@ -8,36 +8,33 @@ export default function HeroSection() {
     navigate("/generate");
   };
 
-  const scrollToSection = (id) => {
-    const element = document.getElementById(id);
-    if (element) {
-      element.scrollIntoView({ behavior: "smooth" });
-    }
+  const handleOpenMyGenerations = () => {
+    navigate("/my-generations");
   };
 
   return (
     <section id="home" className="hero-section">
       <div className="hero-content">
         <h1 className="hero-title">
-          Your complete brand.
+          One image.
           <br />
-          One prompt away.
+          Unlimited marketing.
         </h1>
 
         <p className="hero-description">
-          Generate professional logos, color palettes, and brand guidelines
-          tailored to your vision. No design skills required.
+          Upload your product and generate studio-quality ads, lifestyle scenes,
+          and social creatives tailored to your brand.
         </p>
 
         <div className="hero-buttons">
           <button className="btn btn-primary" onClick={handleGeneration}>
-            Start Forging
+            Generate Creatives
           </button>
           <button
             className="btn btn-secondary"
-            onClick={() => scrollToSection("features")}
+            onClick={handleOpenMyGenerations}
           >
-            View Features
+            View Generations
           </button>
         </div>
       </div>

@@ -1,0 +1,202 @@
+:root {
+  --gen-bg-0: #041318;
+  --gen-bg-1: #071f26;
+  --gen-surface: rgba(8, 27, 34, 0.9);
+  --gen-surface-strong: rgba(7, 24, 32, 0.96);
+  --gen-border: rgba(255, 255, 255, 0.1);
+  --gen-border-soft: rgba(255, 255, 255, 0.07);
+  --gen-text-muted: #7d7d7d;
+  --gen-accent: #00c9ff;
+  --gen-accent-2: #92fe9d;
+  --gen-shadow: 0 24px 70px rgba(0, 0, 0, 0.45);
+}
+
+.my-generations-page {
+  min-height: 100vh;
+  color: white;
+  background: black;
+}
+
+.my-generations-shell {
+  max-width: 1240px;
+  margin: 0 auto;
+  padding: 28px 20px 48px;
+}
+
+.my-generations-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 16px;
+  margin-bottom: 20px;
+}
+
+.my-generations-header h1 {
+  margin: 0;
+  font-size: 1.65rem;
+  line-height: 1.2;
+}
+
+.my-generations-header p {
+  margin: 8px 0 0;
+  max-width: 700px;
+  color: var(--gen-text-muted);
+}
+
+.my-generations-actions {
+  display: flex;
+  gap: 10px;
+}
+
+.ghost-btn,
+.accent-btn,
+.overlay-btn {
+  border: 0;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.ghost-btn {
+  padding: 10px 14px;
+  font-size: 0.82rem;
+  background: rgb(25, 25, 25);
+  color: white;
+  border: 1px solid var(--gen-border-soft);
+}
+
+.ghost-btn:hover {
+  background: rgba(255, 255, 255, 0.08);
+  border-color: var(--gen-accent);
+}
+
+.accent-btn,
+.overlay-btn {
+  padding: 10px 14px;
+  font-size: 0.82rem;
+  background: #92fe9d;
+  color: #043a49;
+  font-weight: 500;
+}
+
+.accent-btn:hover,
+.overlay-btn:hover {
+  transform: translateY(-1px);
+  filter: brightness(1.05);
+}
+
+.my-generations-count {
+  margin: 0 0 16px;
+  color: var(--gen-text-muted);
+  font-size: 0.9rem;
+}
+
+.empty-state {
+  border: 1px solid var(--gen-border);
+  border-radius: 14px;
+  background: rgb(25, 25, 25);
+  padding: 30px;
+  text-align: center;
+  box-shadow: var(--gen-shadow);
+}
+
+.empty-state h2 {
+  margin: 0;
+  font-size: 1.4rem;
+}
+
+.empty-state p {
+  margin: 10px 0 20px;
+  color: var(--gen-text-muted);
+}
+
+.generations-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 16px;
+}
+
+.generation-card {
+  border: 1px solid var(--gen-border);
+  border-radius: 14px;
+  overflow: hidden;
+  background: rgb(25, 25, 25);
+  box-shadow: var(--gen-shadow);
+  transition: all 0.2s ease;
+}
+
+.generation-card:hover {
+  border-color: rgba(0, 201, 255, 0.5);
+}
+
+.generation-media-wrap {
+  position: relative;
+}
+
+.generation-image {
+  width: 100%;
+  height: 220px;
+  object-fit: cover;
+  display: block;
+  transition: transform 0.3s ease;
+}
+
+.generation-card:hover .generation-image {
+  transform: scale(1.03);
+}
+
+.generation-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to top,
+    rgba(2, 10, 14, 0.65),
+    rgba(2, 10, 14, 0)
+  );
+  opacity: 0;
+  transition: opacity 0.24s ease;
+  display: flex;
+  gap: 8px;
+  align-items: flex-end;
+  justify-content: flex-end;
+  padding: 14px;
+}
+
+.generation-card:hover .generation-overlay {
+  opacity: 1;
+}
+
+.overlay-btn {
+  padding: 8px 12px;
+}
+
+.generation-content {
+  padding: 12px;
+}
+
+.generation-content h3 {
+  margin: 0;
+  font-size: 1rem;
+  color: white;
+}
+
+.generation-content p {
+  margin: 5px 0 0;
+  color: var(--gen-text-muted);
+  font-size: 0.82rem;
+}
+
+@media (max-width: 720px) {
+  .my-generations-header {
+    flex-direction: column;
+  }
+
+  .my-generations-actions {
+    width: 100%;
+  }
+
+  .ghost-btn,
+  .accent-btn {
+    flex: 1;
+  }
+}

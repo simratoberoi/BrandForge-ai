@@ -47,7 +47,9 @@ const Login = () => {
             {state === "login" ? "Login" : "Sign up"}
           </h1>
 
-          <p className="login-subtitle">Please sign in to continue</p>
+          <p className="login-subtitle">
+            Sign in to create product marketing visuals
+          </p>
 
           {state !== "login" && (
             <div className="input-group">

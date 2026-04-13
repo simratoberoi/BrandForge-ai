@@ -16,7 +16,6 @@ const useMedia = (queries, values, defaultValue) => {
       queries.forEach((q) =>
         matchMedia(q).removeEventListener("change", handler),
       );
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [queries]);
 
   return value;
@@ -129,7 +128,6 @@ const Masonry = ({
       return { ...child, x, y, w: columnWidth, h: height };
     });
 
-    // Calculate the total height needed
     const maxHeight = Math.max(...gridItems.map((item) => item.y + item.h), 0);
     setGridHeight(maxHeight);
 
@@ -180,7 +178,6 @@ const Masonry = ({
     });
 
     hasMounted.current = true;
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [grid, imagesReady, stagger, animateFrom, blurToFocus, duration, ease]);
 
   const handleMouseEnter = (e, item) => {

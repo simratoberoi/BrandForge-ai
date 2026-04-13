@@ -6,6 +6,7 @@ import Navbar from "./components/navbar.jsx";
 import Home from "./Home.jsx";
 import Login from "./Login.jsx";
 import Generate from "./Generate.jsx";
+import MyGenerations from "./mygenerations.jsx";
 
 const HomeWithNav = () => (
   <>
@@ -21,6 +22,8 @@ createRoot(document.getElementById("root")).render(
         <Route path="/" element={<HomeWithNav />} />
         <Route path="/login" element={<Login />} />
         <Route path="/generate" element={<Generate />} />
+        <Route path="/generate/:id" element={<Generate />} />
+        <Route path="/my-generations" element={<MyGenerations />} />
       </Routes>
     </BrowserRouter>
   </StrictMode>,

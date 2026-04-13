@@ -28,24 +28,24 @@ const FeatureCard = ({ title, description }) => {
 export default function Features() {
   const features = [
     {
-      title: "AI Logo Creation",
+      title: "Product-To-Mockup Engine",
       description:
-        "Tell us your brand name and vibe. We generate a professional, scalable logo designed to match your industry, tone, and target audience — ready for web, social media, and print use.",
+        "Upload a bottle, sneaker, gadget, or any product image and get polished marketing-ready mockups with realistic shadows, reflections, and composition.",
     },
     {
-      title: "LinkedIn Banner Design",
+      title: "Lifestyle Scene Generation",
       description:
-        "Stand out on LinkedIn with a banner that aligns perfectly with your brand identity. Your colors, typography, and messaging are automatically applied to create a cohesive and professional presence.",
+        "Place your product in natural environments like desk setups, gym spaces, kitchen counters, or outdoor moments that feel authentic and conversion-driven.",
     },
     {
-      title: "Smart Color Palette",
+      title: "Multi-Channel Ad Outputs",
       description:
-        "We create a balanced, modern color system tailored to your brand personality — including primary, secondary, and accent colors with hex codes that are ready to use across all platforms.",
+        "Create studio ads, landing page hero visuals, and social media creatives in the right dimensions for paid campaigns, websites, and organic posts.",
     },
     {
-      title: "Branding Guidelines",
+      title: "Prompt-Controlled Art Direction",
       description:
-        "Receive a clean, structured brand guide explaining logo usage, spacing, typography rules, and color applications — so your brand remains consistent everywhere it appears.",
+        "Guide composition, mood, background style, and lighting with prompts so every generated creative matches your campaign concept and audience.",
     },
   ];
 

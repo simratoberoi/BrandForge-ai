@@ -7,27 +7,27 @@ import Footer from "./components/footer";
 const items = [
   {
     id: 1,
-    img: "https://cdn.dribbble.com/userupload/9777850/file/original-c53926f45c3b5a4eaa506e046628d9d1.jpg?resize=1504x1128&vertical=center",
+    img: "https://cdn.dribbble.com/userupload/44493558/file/222e130b5711110c712b618b71e06f8e.jpg?resize=2048x1365&vertical=center",
     height: 800,
     url: "#",
   },
   {
     id: 10,
-    img: "https://brand.rochester.edu/wp-content/uploads/2025/09/BrandLaunch_Thumbnails_1600x1066Color.png",
+    img: "https://cdn.dribbble.com/userupload/46779252/file/d51152d7f44fac1611f551d495ca3e68.png?resize=2048x1536&vertical=center",
     height: 800,
     url: "#",
   },
 
   {
     id: 2,
-    img: "https://cdn.dribbble.com/userupload/7601218/file/original-4985fbd6fa7cd5977b59888acb37ad4e.png?resize=1504x1128&vertical=center",
+    img: "https://cdn.dribbble.com/userupload/46621314/file/0f08268068817fcfd4c3610ffdf726ab.png?resize=1024x1024&vertical=center",
     height: 800,
     url: "#",
   },
 
   {
     id: 12,
-    img: "https://mir-s3-cdn-cf.behance.net/projects/404/1112ea176803133.Y3JvcCwxNTM1LDEyMDEsNzYsMA.jpg",
+    img: "https://cdn.dribbble.com/userupload/45349571/file/bdfa139f276ae8fea7242d2d7260349e.webp?resize=1200x636&vertical=center",
     height: 800,
     url: "#",
   },

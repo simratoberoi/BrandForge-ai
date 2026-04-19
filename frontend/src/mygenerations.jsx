@@ -39,6 +39,15 @@ const formatDate = (isoDate) => {
   return date.toLocaleString();
 };
 
+const getDownloadExtension = (url) => {
+  if (!url) return "png";
+  const cleaned = url.split("?")[0].toLowerCase();
+  if (cleaned.endsWith(".jpg") || cleaned.endsWith(".jpeg")) return "jpg";
+  if (cleaned.endsWith(".webp")) return "webp";
+  if (cleaned.endsWith(".gif")) return "gif";
+  return "png";
+};
+
 export default function MyGenerations() {
   const navigate = useNavigate();
   const [creatives, setCreatives] = useState([]);
@@ -82,13 +91,27 @@ export default function MyGenerations() {
     navigate(`/generate/${id}`);
   };
 
-  const handleDownload = (creative) => {
-    const link = document.createElement("a");
-    link.href = creative.imageUrl;
-    link.download = `${(creative.title || "creative").replace(/\s+/g, "-").toLowerCase()}.svg`;
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
+  const handleDownload = async (creative) => {
+    try {
+      const response = await fetch(creative.imageUrl);
+      if (!response.ok) {
+        throw new Error("Failed to download image");
+      }
+
+      const blob = await response.blob();
+      const downloadUrl = URL.createObjectURL(blob);
+      const link = document.createElement("a");
+      const ext = getDownloadExtension(creative.imageUrl);
+      link.href = downloadUrl;
+      link.download = `${(creative.title || "creative").replace(/\s+/g, "-").toLowerCase()}.${ext}`;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      URL.revokeObjectURL(downloadUrl);
+    } catch {
+      // Keep this silent to avoid disrupting browse flow if browser blocks cross-origin fetch.
+      window.open(creative.imageUrl, "_blank", "noopener,noreferrer");
+    }
   };
 
   const refreshList = () => {
@@ -103,7 +126,7 @@ export default function MyGenerations() {
             <h1>My Generations</h1>
             <p>
               All previously generated product mockups and campaign creatives
-              from this browser session.
+              from your account.
             </p>
           </div>
           <div className="my-generations-actions">

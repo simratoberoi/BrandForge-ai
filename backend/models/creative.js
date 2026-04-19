@@ -16,6 +16,10 @@ const creativeSchema = new mongoose.Schema(
     productImageName: { type: String, default: "" },
     model: { type: String, default: "" },
     imageUrl: { type: String, default: "" },
+    prompt: { type: String, default: "" },
+    sourceImageUrl: { type: String, default: "" },
+    sourcePublicId: { type: String, default: "" },
+    generatedPublicId: { type: String, default: "" },
   },
   { timestamps: true },
 );

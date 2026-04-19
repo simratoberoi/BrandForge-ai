@@ -39,25 +39,19 @@ const userSchema = new mongoose.Schema(
 
 // MIDDLEWARE: Hash password before saving
 // "pre" means this runs BEFORE the document is saved
-userSchema.pre("save", async function (next) {
+userSchema.pre("save", async function () {
   // If password wasn't modified, skip hashing
   if (!this.isModified("password")) {
-    return next();
+    return;
   }
 
-  try {
-    // Generate salt (random data to make hash unique)
-    // 10 = cost factor (higher = more secure but slower)
-    const salt = await bcrypt.genSalt(10);
+  // Generate salt (random data to make hash unique)
+  // 10 = cost factor (higher = more secure but slower)
+  const salt = await bcrypt.genSalt(10);
 
-    // Hash the password
-    // bcrypt.hash("abc123", salt) → "$2b$10$xK9pL2mN..."
-    this.password = await bcrypt.hash(this.password, salt);
-
-    next(); // Continue with save
-  } catch (error) {
-    next(error); // Pass error to route handler
-  }
+  // Hash the password
+  // bcrypt.hash("abc123", salt) → "$2b$10$xK9pL2mN..."
+  this.password = await bcrypt.hash(this.password, salt);
 });
 
 // METHOD: Compare entered password with stored hash

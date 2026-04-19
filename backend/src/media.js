@@ -4,7 +4,10 @@ import cloudinary from "./services/cloudinary.js";
 import verifyToken from "./middleware/verifyToken.js";
 
 const router = express.Router();
-const upload = multer({ storage: multer.memoryStorage() });
+const upload = multer({
+  storage: multer.memoryStorage(),
+  limits: { fileSize: 10 * 1024 * 1024 },
+});
 
 router.post(
   "/upload-source",
@@ -16,6 +19,13 @@ router.post(
         return res
           .status(400)
           .json({ success: false, message: "No image uploaded" });
+      }
+
+      if (!req.file.mimetype?.startsWith("image/")) {
+        return res.status(400).json({
+          success: false,
+          message: "Only image files are allowed",
+        });
       }
 
       const base64 = `data:${req.file.mimetype};base64,${req.file.buffer.toString("base64")}`;
@@ -31,13 +41,18 @@ router.post(
         sourcePublicId: result.public_id,
       });
     } catch (error) {
-      return res
-        .status(500)
-        .json({
+      if (error?.code === "LIMIT_FILE_SIZE") {
+        return res.status(400).json({
           success: false,
-          message: "Upload failed",
-          error: error.message,
+          message: "Image is too large. Max file size is 10MB.",
         });
+      }
+
+      return res.status(500).json({
+        success: false,
+        message: "Upload failed",
+        error: error.message,
+      });
     }
   },
 );

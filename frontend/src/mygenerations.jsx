@@ -2,6 +2,7 @@ import { useEffect, useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "./mygenerations.css";
 
+const API_BASE = "http://localhost:5000";
 const STORAGE_PREFIX = "brandforge_creative_";
 
 const parseStoredCreatives = () => {
@@ -42,8 +43,33 @@ export default function MyGenerations() {
   const navigate = useNavigate();
   const [creatives, setCreatives] = useState([]);
 
+  const fetchCreatives = async () => {
+    const token = localStorage.getItem("authToken");
+    if (!token) {
+      navigate("/login");
+      return;
+    }
+
+    try {
+      const response = await fetch(`${API_BASE}/api/creatives`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      const data = await response.json();
+
+      if (response.ok && data.success) {
+        setCreatives(data.creatives || []);
+      } else {
+        setCreatives(parseStoredCreatives());
+      }
+    } catch {
+      setCreatives(parseStoredCreatives());
+    }
+  };
+
   useEffect(() => {
-    setCreatives(parseStoredCreatives());
+    fetchCreatives();
   }, []);
 
   const countLabel = useMemo(
@@ -66,7 +92,7 @@ export default function MyGenerations() {
   };
 
   const refreshList = () => {
-    setCreatives(parseStoredCreatives());
+    fetchCreatives();
   };
 
   return (
@@ -114,7 +140,10 @@ export default function MyGenerations() {
         ) : (
           <section className="generations-grid">
             {creatives.map((creative) => (
-              <article key={creative.id} className="generation-card">
+              <article
+                key={creative._id || creative.id}
+                className="generation-card"
+              >
                 <div className="generation-media-wrap">
                   <img
                     src={creative.imageUrl}
@@ -125,7 +154,7 @@ export default function MyGenerations() {
                     <button
                       type="button"
                       className="overlay-btn"
-                      onClick={() => handleOpen(creative.id)}
+                      onClick={() => handleOpen(creative._id || creative.id)}
                     >
                       Open
                     </button>
@@ -145,7 +174,7 @@ export default function MyGenerations() {
                     {creative.aspectRatio || "16:9"} •{" "}
                     {creative.thumbnailStyle || "Bold & Graphic"}
                   </p>
-                  <p>ID: {creative.id}</p>
+                  <p>ID: {creative._id || creative.id}</p>
                   <p>Created: {formatDate(creative.createdAt)}</p>
                 </div>
               </article>

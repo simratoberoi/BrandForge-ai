@@ -7,6 +7,7 @@ import Home from "./Home.jsx";
 import Login from "./Login.jsx";
 import Generate from "./Generate.jsx";
 import MyGenerations from "./mygenerations.jsx";
+import ProtectedRoute from "./components/ProtectedRoute.jsx";
 
 const HomeWithNav = () => (
   <>
@@ -21,9 +22,30 @@ createRoot(document.getElementById("root")).render(
       <Routes>
         <Route path="/" element={<HomeWithNav />} />
         <Route path="/login" element={<Login />} />
-        <Route path="/generate" element={<Generate />} />
-        <Route path="/generate/:id" element={<Generate />} />
-        <Route path="/my-generations" element={<MyGenerations />} />
+        <Route
+          path="/generate"
+          element={
+            <ProtectedRoute>
+              <Generate />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/generate/:id"
+          element={
+            <ProtectedRoute>
+              <Generate />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/my-generations"
+          element={
+            <ProtectedRoute>
+              <MyGenerations />
+            </ProtectedRoute>
+          }
+        />
       </Routes>
     </BrowserRouter>
   </StrictMode>,

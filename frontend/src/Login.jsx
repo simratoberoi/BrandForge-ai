@@ -10,17 +10,89 @@ const Login = () => {
     email: "",
     password: "",
   });
+  const [message, setMessage] = React.useState({ type: "", text: "" });
+  const [isLoading, setIsLoading] = React.useState(false);
+
+  const navigate = useNavigate();
 
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-  };
+    setMessage({ type: "", text: "" });
+    setIsLoading(true);
 
-  const navigate = useNavigate();
+    try {
+      const endpoint =
+        state === "login"
+          ? "http://localhost:5000/api/auth/login"
+          : "http://localhost:5000/api/auth/register";
+
+      const payload =
+        state === "login"
+          ? {
+              email: formData.email,
+              password: formData.password,
+            }
+          : {
+              name: formData.name,
+              email: formData.email,
+              password: formData.password,
+            };
+
+      const response = await fetch(endpoint, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(payload),
+      });
+
+      const data = await response.json().catch(() => null);
+
+      if (!response.ok || !data?.success) {
+        throw new Error(data?.message || "Request failed. Please try again.");
+      }
+
+      // If successful, data contains: { success: true, token?, user }
+      const { token, user } = data;
+
+      // NEW: Store the token in browser's localStorage
+      // This token proves the user is logged in
+      if (token) {
+        localStorage.setItem("authToken", token);
+      }
+      localStorage.setItem("user", JSON.stringify(user));
+
+      // Show success message
+      setMessage({
+        type: "success",
+        text: `Welcome ${user.name}!`,
+      });
+
+      setTimeout(() => {
+        navigate("/generate");
+      }, 1000);
+    } catch (error) {
+      // If something goes wrong, show the error
+      let errorMessage = error.message || "Something went wrong";
+
+      if (errorMessage === "Failed to fetch") {
+        errorMessage =
+          "Cannot reach backend server on port 5000. Start backend and check API URL.";
+      }
+
+      setMessage({
+        type: "error",
+        text: errorMessage,
+      });
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
   return (
     <>
@@ -71,6 +143,7 @@ const Login = () => {
               <input
                 type="text"
                 name="name"
+                autoComplete="name"
                 placeholder="Name"
                 value={formData.name}
                 onChange={handleChange}
@@ -98,6 +171,7 @@ const Login = () => {
             <input
               type="email"
               name="email"
+              autoComplete="email"
               placeholder="Email id"
               value={formData.email}
               onChange={handleChange}
@@ -124,6 +198,9 @@ const Login = () => {
             <input
               type="password"
               name="password"
+              autoComplete={
+                state === "login" ? "current-password" : "new-password"
+              }
               placeholder="Password"
               value={formData.password}
               onChange={handleChange}
@@ -132,12 +209,28 @@ const Login = () => {
           </div>
 
           <div className="forget-password-container">
-            <button className="forget-password-btn">Forget password?</button>
+            <button type="button" className="forget-password-btn">
+              Forget password?
+            </button>
           </div>
 
-          <button type="submit" className="submit-btn">
-            {state === "login" ? "Login" : "Sign up"}
+          <button type="submit" className="submit-btn" disabled={isLoading}>
+            {isLoading
+              ? "Please wait..."
+              : state === "login"
+                ? "Login"
+                : "Sign up"}
           </button>
+
+          {message.text && (
+            <p
+              className={message.type === "error" ? "error-msg" : "success-msg"}
+              role="alert"
+              aria-live="polite"
+            >
+              {message.text}
+            </p>
+          )}
 
           <p
             onClick={() =>

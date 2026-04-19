@@ -5,11 +5,13 @@ export default function HeroSection() {
   const navigate = useNavigate();
 
   const handleGeneration = () => {
-    navigate("/generate");
+    const token = localStorage.getItem("authToken");
+    navigate(token ? "/generate" : "/login");
   };
 
   const handleOpenMyGenerations = () => {
-    navigate("/my-generations");
+    const token = localStorage.getItem("authToken");
+    navigate(token ? "/my-generations" : "/login");
   };
 
   return (

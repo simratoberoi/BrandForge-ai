@@ -2,6 +2,15 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import "./Generate.css";
 
+const API_BASE = "http://localhost:5000";
+
+const getAuthToken = () => localStorage.getItem("authToken");
+
+const getAuthHeaders = (extra = {}) => ({
+  ...extra,
+  Authorization: `Bearer ${getAuthToken()}`,
+});
+
 const colorSchemes = [
   {
     id: "vibrant",
@@ -140,42 +149,67 @@ const Generate = () => {
   }, [sourcePreviewUrl]);
 
   useEffect(() => {
-    if (!id || !storageKey) return;
+    if (!id) return;
 
-    const raw = sessionStorage.getItem(storageKey);
-    if (!raw) {
+    const token = getAuthToken();
+    if (!token) {
       setFeedback({
         tone: "error",
-        text: `No local creative found for ID \"${id}\". Generate a new one to create this route.`,
+        text: "Please login to access this creative.",
       });
+      navigate("/login");
       return;
     }
 
-    try {
-      const parsed = JSON.parse(raw);
-      setTitle(parsed.title || "");
-      setAspectRatio(parsed.aspectRatio || "16:9");
-      setThumbnailStyle(parsed.thumbnailStyle || styles[0]);
-      setModel(parsed.model || "premium");
-      setOutputType(parsed.outputType || outputTypes[0]);
-      setAdditionalPrompts(parsed.additionalPrompts || "");
-      setProductImageName(parsed.productImageName || "");
-      const selectedScheme = colorSchemes.find(
-        (scheme) => scheme.id === parsed.colorSchemeId,
-      );
-      setColorScheme(selectedScheme || colorSchemes[0]);
-      setGeneratedCreative(parsed);
-      setFeedback({
-        tone: "info",
-        text: `Loaded creative ${id} from local session.`,
-      });
-    } catch {
-      setFeedback({
-        tone: "error",
-        text: "Unable to parse saved creative data for this ID.",
-      });
-    }
-  }, [id, storageKey]);
+    const loadCreative = async () => {
+      try {
+        const response = await fetch(`${API_BASE}/api/creatives/${id}`, {
+          headers: getAuthHeaders(),
+        });
+        const data = await response.json();
+
+        if (!response.ok || !data.success) {
+          throw new Error(data.message || "Creative not found");
+        }
+
+        const parsed = data.creative;
+        setTitle(parsed.title || "");
+        setAspectRatio(parsed.aspectRatio || "16:9");
+        setThumbnailStyle(parsed.thumbnailStyle || styles[0]);
+        setModel(parsed.model || "premium");
+        setOutputType(parsed.outputType || outputTypes[0]);
+        setAdditionalPrompts(parsed.additionalPrompts || "");
+        setProductImageName(parsed.productImageName || "");
+        const selectedScheme = colorSchemes.find(
+          (scheme) => scheme.id === parsed.colorSchemeId,
+        );
+        setColorScheme(selectedScheme || colorSchemes[0]);
+        setGeneratedCreative(parsed);
+        setFeedback({
+          tone: "info",
+          text: "Loaded creative from your account.",
+        });
+      } catch {
+        // Optional fallback for old local-only items
+        if (storageKey) {
+          const raw = sessionStorage.getItem(storageKey);
+          if (raw) {
+            try {
+              const parsed = JSON.parse(raw);
+              setGeneratedCreative(parsed);
+              return;
+            } catch {}
+          }
+        }
+        setFeedback({
+          tone: "error",
+          text: "Unable to load this creative.",
+        });
+      }
+    };
+
+    loadCreative();
+  }, [id, storageKey, navigate]);
 
   const handlePhotoChange = (event) => {
     const file = event.target.files?.[0];
@@ -203,7 +237,7 @@ const Generate = () => {
     });
   };
 
-  const handleGenerate = () => {
+  const handleGenerate = async () => {
     if (!title.trim()) {
       setFeedback({
         tone: "error",
@@ -220,6 +254,16 @@ const Generate = () => {
       return;
     }
 
+    const token = getAuthToken();
+    if (!token) {
+      setFeedback({
+        tone: "error",
+        text: "Please login to generate creatives.",
+      });
+      navigate("/login");
+      return;
+    }
+
     setIsLoading(true);
     setLoadingIndex(0);
     setFeedback({
@@ -231,24 +275,24 @@ const Generate = () => {
       setLoadingIndex((prev) => (prev + 1) % loadingMessages.length);
     }, 850);
 
-    setTimeout(() => {
-      if (loadingIntervalRef.current) {
-        clearInterval(loadingIntervalRef.current);
+    try {
+      // 1) Upload source image
+      const formData = new FormData();
+      formData.append("image", productImageFile);
+
+      const uploadRes = await fetch(`${API_BASE}/api/media/upload-source`, {
+        method: "POST",
+        headers: getAuthHeaders(),
+        body: formData,
+      });
+      const uploadData = await uploadRes.json();
+      if (!uploadRes.ok || !uploadData.success) {
+        throw new Error(uploadData.message || "Source image upload failed");
       }
 
-      const createdId = `${Date.now().toString(36)}-${Math.random().toString(36).slice(2, 7)}`;
-      const imageUrl = createMockCreativeDataUrl({
-        title,
-        outputType,
-        aspectRatio,
-        thumbnailStyle,
-        colorScheme,
-        additionalPrompts,
-      });
-
-      const payload = {
-        id: createdId,
-        imageUrl,
+      // 2) Generate image via backend
+      const genPayload = {
+        sourceImageUrl: uploadData.sourceImageUrl,
         title,
         outputType,
         aspectRatio,
@@ -257,21 +301,55 @@ const Generate = () => {
         model,
         additionalPrompts,
         productImageName,
-        createdAt: new Date().toISOString(),
       };
 
-      sessionStorage.setItem(
-        `brandforge_creative_${createdId}`,
-        JSON.stringify(payload),
-      );
-      setGeneratedCreative(payload);
-      setIsLoading(false);
+      const genRes = await fetch(`${API_BASE}/api/generations/generate`, {
+        method: "POST",
+        headers: getAuthHeaders({ "Content-Type": "application/json" }),
+        body: JSON.stringify(genPayload),
+      });
+      const genData = await genRes.json();
+      if (!genRes.ok || !genData.success) {
+        throw new Error(genData.message || "Generation failed");
+      }
+
+      // 3) Save metadata in MongoDB
+      const savePayload = {
+        ...genPayload,
+        imageUrl: genData.generatedImageUrl,
+        prompt: genData.prompt || "",
+        sourceImageUrl: uploadData.sourceImageUrl,
+        generatedPublicId: genData.generatedPublicId || "",
+      };
+
+      const saveRes = await fetch(`${API_BASE}/api/creatives`, {
+        method: "POST",
+        headers: getAuthHeaders({ "Content-Type": "application/json" }),
+        body: JSON.stringify(savePayload),
+      });
+      const saveData = await saveRes.json();
+      if (!saveRes.ok || !saveData.success) {
+        throw new Error(saveData.message || "Saving creative failed");
+      }
+
+      const created = saveData.creative;
+      setGeneratedCreative(created);
       setFeedback({
         tone: "success",
-        text: "Creative generated successfully. Preview and download are ready.",
+        text: "Creative generated and saved successfully.",
       });
-      navigate(`/generate/${createdId}`, { replace: true });
-    }, 3200);
+      navigate(`/generate/${created._id || created.id}`, { replace: true });
+    } catch (error) {
+      setFeedback({
+        tone: "error",
+        text: error.message || "Something went wrong during generation.",
+      });
+    } finally {
+      if (loadingIntervalRef.current) {
+        clearInterval(loadingIntervalRef.current);
+      }
+      setIsLoading(false);
+    }
   };
 
   const handleDownload = () => {
@@ -498,7 +576,9 @@ const Generate = () => {
                   </div>
                 </div>
                 <div className="preview-meta">
-                  <p>Creative ID: {generatedCreative.id}</p>
+                  <p>
+                    Creative ID: {generatedCreative._id || generatedCreative.id}
+                  </p>
                   <p>
                     {generatedCreative.outputType} •{" "}
                     {generatedCreative.aspectRatio} •{" "}

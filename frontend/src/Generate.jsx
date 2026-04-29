@@ -96,7 +96,7 @@ const Generate = () => {
   const [aspectRatio, setAspectRatio] = useState("16:9");
   const [thumbnailStyle, setThumbnailStyle] = useState(styles[0]);
   const [colorScheme, setColorScheme] = useState(colorSchemes[0]);
-  const [model, setModel] = useState("premium");
+  const [model] = useState("premium");
   const [outputType, setOutputType] = useState(outputTypes[0]);
   const [additionalPrompts, setAdditionalPrompts] = useState("");
   const [productImageFile, setProductImageFile] = useState(null);
@@ -365,264 +365,324 @@ const Generate = () => {
   return (
     <div className="generate-page">
       <main className="generate-shell">
-        <section className="generate-hero-card">
+        <header className="generate-header">
           <div>
-            <h1>Generate Product Creatives with AI</h1>
+            <p className="header-kicker">AI Campaign Studio</p>
+            <h1>New Product Creative</h1>
             <p>
-              Transform your product into high-end visuals for ads, websites, &
-              social media.
+              Build a premium-ready visual with precise output settings and
+              brand mood.
             </p>
           </div>
-          <button type="button" className="hero-cta-btn">
-            Try Now
-            <span aria-hidden="true">→</span>
-          </button>
-        </section>
+          <div className="header-actions">
+            <span className="status-pill">Status: Draft</span>
+          </div>
+        </header>
 
-        <section className="generate-main-grid">
-          <article className="generate-form-card">
-            <header>
-              <h2>Create Your Campaign Visual</h2>
-              <p>
-                Define output type, style, and mood to generate ad-ready assets
-              </p>
-            </header>
-
-            <label className="field-label" htmlFor="title-input">
-              Product / Campaign Title
-            </label>
-            <div className="field-with-counter">
-              <input
-                id="title-input"
-                maxLength={100}
-                value={title}
-                onChange={(event) => setTitle(event.target.value)}
-                placeholder="e.g. Revive Hydration Bottle - Summer Launch"
-              />
-              <span>{titleCount}/100</span>
-            </div>
-
-            <p className="field-label">Output Type</p>
-            <div className="output-grid">
-              {outputTypes.map((type) => (
-                <button
-                  key={type}
-                  type="button"
-                  onClick={() => setOutputType(type)}
-                  className={
-                    outputType === type ? "output-btn active" : "output-btn"
-                  }
-                >
-                  {type}
-                </button>
-              ))}
-            </div>
-
-            <p className="field-label">Aspect Ratio</p>
-            <div className="ratio-grid">
-              {ratios.map((ratio) => (
-                <button
-                  key={ratio}
-                  type="button"
-                  onClick={() => setAspectRatio(ratio)}
-                  className={
-                    aspectRatio === ratio ? "ratio-btn active" : "ratio-btn"
-                  }
-                >
-                  {ratio}
-                </button>
-              ))}
-            </div>
-
-            <label className="field-label" htmlFor="style-select">
-              Creative Direction
-            </label>
-            <select
-              id="style-select"
-              value={thumbnailStyle}
-              onChange={(event) => setThumbnailStyle(event.target.value)}
-            >
-              {styles.map((option) => (
-                <option key={option} value={option}>
-                  {option}
-                </option>
-              ))}
-            </select>
-            <p className="field-hint">
-              Controls composition, typography feel, and visual intensity
-            </p>
-
-            <p className="field-label">Brand Color Mood</p>
-            <div className="color-row">
-              {colorSchemes.map((scheme) => (
-                <button
-                  key={scheme.id}
-                  type="button"
-                  aria-label={scheme.name}
-                  onClick={() => setColorScheme(scheme)}
-                  className={
-                    colorScheme.id === scheme.id
-                      ? "color-chip active"
-                      : "color-chip"
-                  }
-                  style={{ background: scheme.swatch }}
-                />
-              ))}
-            </div>
-            <p className="field-hint">Selected: {colorScheme.name}</p>
-
-            <label className="field-label" htmlFor="model-select">
-              Model
-            </label>
-            <select
-              id="model-select"
-              value={model}
-              onChange={(event) => setModel(event.target.value)}
-            >
-              <option value="premium">Premium (10 credits)</option>
-              <option value="advanced">Advanced (7 credits)</option>
-              <option value="standard">Standard (3 credits)</option>
-            </select>
-
-            <div className="photo-row">
-              <div className="photo-icon" aria-hidden="true">
-                <svg
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <path
-                    d="M12 12C14.2091 12 16 10.2091 16 8C16 5.79086 14.2091 4 12 4C9.79086 4 8 5.79086 8 8C8 10.2091 9.79086 12 12 12Z"
-                    stroke="currentColor"
-                    strokeWidth="1.6"
-                  />
-                  <path
-                    d="M4 20C4.8 16.8 7.6 15 12 15C16.4 15 19.2 16.8 20 20"
-                    stroke="currentColor"
-                    strokeWidth="1.6"
-                    strokeLinecap="round"
-                  />
-                </svg>
-              </div>
-              <div className="photo-meta">
-                <p>
-                  Product Image <span>(required)</span>
-                </p>
-                <label className="upload-btn" htmlFor="photo-upload">
-                  Upload Product
-                </label>
-                <input
-                  id="photo-upload"
-                  type="file"
-                  accept="image/*"
-                  onChange={handlePhotoChange}
-                />
-              </div>
-            </div>
-            {productImageName && (
-              <p className="field-hint">Attached: {productImageName}</p>
-            )}
-
-            {feedback.text && (
-              <p className={`feedback-banner ${feedback.tone}`}>
-                {feedback.text}
-              </p>
-            )}
-
-            <label className="field-label" htmlFor="additional-prompts">
-              Additional Prompts <span>(optional)</span>
-            </label>
-            <textarea
-              id="additional-prompts"
-              placeholder="Describe background, lighting, prop ideas, angle, and campaign mood..."
-              value={additionalPrompts}
-              onChange={(event) => setAdditionalPrompts(event.target.value)}
-            />
-
-            <button
-              type="button"
-              className="generate-btn"
-              onClick={handleGenerate}
-              disabled={isLoading}
-            >
-              {isLoading ? "Generating..." : "Generate Marketing Creative"}
-            </button>
-          </article>
-
-          <article className="generate-preview-card">
-            <h2>Preview</h2>
-            {isLoading ? (
-              <div className="preview-dropzone loading-state">
-                <div className="loading-spinner" aria-hidden="true" />
-                <h3>Generating your creative</h3>
-                <p>{loadingMessages[loadingIndex]}</p>
-              </div>
-            ) : generatedCreative ? (
-              <div className="preview-ready">
-                <div className="preview-media-wrap">
-                  <img
-                    src={generatedCreative.imageUrl}
-                    alt="Generated marketing creative preview"
-                    className="generated-preview-image"
-                  />
-                  <div className="preview-overlay">
-                    <button
-                      type="button"
-                      className="download-btn"
-                      onClick={handleDownload}
-                    >
-                      Download Creative
-                    </button>
+        <section className="generate-panel-grid">
+          <aside className="generate-media-panel">
+            <article className="panel-card panel-card--preview">
+              <header className="panel-card-header">
+                <div>
+                  <h2>Creative Preview</h2>
+                  <p>Live view of the generated output and details.</p>
+                </div>
+              </header>
+              {isLoading ? (
+                <div className="preview-dropzone loading-state">
+                  <div className="loading-spinner" aria-hidden="true" />
+                  <h3>Generating your creative</h3>
+                  <p>{loadingMessages[loadingIndex]}</p>
+                </div>
+              ) : generatedCreative ? (
+                <div className="preview-ready">
+                  <div className="preview-media-wrap">
+                    <img
+                      src={generatedCreative.imageUrl}
+                      alt="Generated marketing creative preview"
+                      className="generated-preview-image"
+                    />
+                    <div className="preview-overlay">
+                      <button
+                        type="button"
+                        className="download-btn"
+                        onClick={handleDownload}
+                      >
+                        Download Creative
+                      </button>
+                    </div>
+                  </div>
+                  <div className="preview-meta">
+                    <p>
+                      Creative ID:{" "}
+                      {generatedCreative._id || generatedCreative.id}
+                    </p>
+                    <p>
+                      {generatedCreative.outputType} •{" "}
+                      {generatedCreative.aspectRatio} •{" "}
+                      {generatedCreative.thumbnailStyle}
+                    </p>
                   </div>
                 </div>
-                <div className="preview-meta">
+              ) : (
+                <div className="preview-dropzone">
+                  <div className="preview-icon" aria-hidden="true">
+                    <svg
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <rect
+                        x="3.5"
+                        y="4.5"
+                        width="17"
+                        height="15"
+                        rx="2.5"
+                        stroke="currentColor"
+                      />
+                      <circle cx="9" cy="10" r="2" stroke="currentColor" />
+                      <path
+                        d="M20 15L15.5 11L8 18"
+                        stroke="currentColor"
+                        strokeLinecap="round"
+                      />
+                    </svg>
+                  </div>
+                  <h3>Generate your first campaign visual</h3>
                   <p>
-                    Creative ID: {generatedCreative._id || generatedCreative.id}
+                    Upload a product image, choose output type, and click
+                    Generate
                   </p>
-                  <p>
-                    {generatedCreative.outputType} •{" "}
-                    {generatedCreative.aspectRatio} •{" "}
-                    {generatedCreative.thumbnailStyle}
-                  </p>
+                  {sourcePreviewUrl && (
+                    <img
+                      src={sourcePreviewUrl}
+                      alt="Selected source product"
+                      className="source-preview-thumb"
+                    />
+                  )}
                 </div>
-              </div>
-            ) : (
-              <div className="preview-dropzone">
-                <div className="preview-icon" aria-hidden="true">
+              )}
+            </article>
+
+            <article className="panel-card panel-card--assets">
+              <header className="panel-card-header">
+                <div>
+                  <h2>Product Assets</h2>
+                  <p>Upload a clean shot to anchor the generation.</p>
+                </div>
+                <span className="panel-chip">Required</span>
+              </header>
+              <div className="photo-row">
+                <div className="photo-icon" aria-hidden="true">
                   <svg
                     viewBox="0 0 24 24"
                     fill="none"
                     xmlns="http://www.w3.org/2000/svg"
                   >
-                    <rect
-                      x="3.5"
-                      y="4.5"
-                      width="17"
-                      height="15"
-                      rx="2.5"
-                      stroke="currentColor"
-                    />
-                    <circle cx="9" cy="10" r="2" stroke="currentColor" />
                     <path
-                      d="M20 15L15.5 11L8 18"
+                      d="M12 12C14.2091 12 16 10.2091 16 8C16 5.79086 14.2091 4 12 4C9.79086 4 8 5.79086 8 8C8 10.2091 9.79086 12 12 12Z"
                       stroke="currentColor"
+                      strokeWidth="1.6"
+                    />
+                    <path
+                      d="M4 20C4.8 16.8 7.6 15 12 15C16.4 15 19.2 16.8 20 20"
+                      stroke="currentColor"
+                      strokeWidth="1.6"
                       strokeLinecap="round"
                     />
                   </svg>
                 </div>
-                <h3>Generate your first campaign visual</h3>
-                <p>
-                  Upload a product image, choose output type, and click Generate
-                </p>
-                {sourcePreviewUrl && (
+                <div className="photo-meta">
+                  <p>
+                    Product Image <span>(required)</span>
+                  </p>
+                  <label className="upload-btn" htmlFor="photo-upload">
+                    Upload Product
+                  </label>
+                  <input
+                    id="photo-upload"
+                    type="file"
+                    accept="image/*"
+                    onChange={handlePhotoChange}
+                  />
+                </div>
+              </div>
+              <div className="asset-preview-grid">
+                {sourcePreviewUrl ? (
                   <img
                     src={sourcePreviewUrl}
                     alt="Selected source product"
-                    className="source-preview-thumb"
+                    className="asset-thumb"
                   />
+                ) : (
+                  <div className="asset-thumb asset-thumb--empty">
+                    <span>Source</span>
+                  </div>
                 )}
+                {generatedCreative?.imageUrl ? (
+                  <img
+                    src={generatedCreative.imageUrl}
+                    alt="Generated creative thumbnail"
+                    className="asset-thumb"
+                  />
+                ) : (
+                  <div className="asset-thumb asset-thumb--empty">
+                    <span>Generated</span>
+                  </div>
+                )}
+                <div className="asset-thumb asset-thumb--add">+</div>
               </div>
-            )}
+              {productImageName && (
+                <p className="field-hint">Attached: {productImageName}</p>
+              )}
+            </article>
+          </aside>
+
+          <article className="generate-details-panel">
+            <div className="panel-card">
+              <header className="panel-card-header">
+                <div>
+                  <h2>Product Details</h2>
+                  <p>Key inputs that shape output quality and brand fit.</p>
+                </div>
+              </header>
+              <div className="detail-tabs">
+                <button type="button" className="detail-tab active">
+                  General
+                </button>
+                <button type="button" className="detail-tab">
+                  Advanced
+                </button>
+              </div>
+
+              {feedback.text && (
+                <p className={`feedback-banner ${feedback.tone}`}>
+                  {feedback.text}
+                </p>
+              )}
+
+              <div className="detail-grid">
+                <div>
+                  <label className="field-label" htmlFor="title-input">
+                    Product / Campaign Title
+                  </label>
+                  <div className="field-with-counter">
+                    <input
+                      id="title-input"
+                      maxLength={100}
+                      value={title}
+                      onChange={(event) => setTitle(event.target.value)}
+                      placeholder="e.g. Revive Hydration Bottle - Summer Launch"
+                    />
+                    <span>{titleCount}/100</span>
+                  </div>
+                </div>
+
+                <div>
+                  <label className="field-label" htmlFor="style-select">
+                    Creative Direction
+                  </label>
+                  <select
+                    id="style-select"
+                    value={thumbnailStyle}
+                    onChange={(event) => setThumbnailStyle(event.target.value)}
+                  >
+                    {styles.map((option) => (
+                      <option key={option} value={option}>
+                        {option}
+                      </option>
+                    ))}
+                  </select>
+                  <p className="field-hint">
+                    Controls composition, typography feel, and visual intensity
+                  </p>
+                </div>
+
+                <div className="detail-span">
+                  <p className="field-label">Output Type</p>
+                  <div className="output-grid">
+                    {outputTypes.map((type) => (
+                      <button
+                        key={type}
+                        type="button"
+                        onClick={() => setOutputType(type)}
+                        className={
+                          outputType === type
+                            ? "output-btn active"
+                            : "output-btn"
+                        }
+                      >
+                        {type}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+
+                <div>
+                  <p className="field-label">Aspect Ratio</p>
+                  <div className="ratio-grid">
+                    {ratios.map((ratio) => (
+                      <button
+                        key={ratio}
+                        type="button"
+                        onClick={() => setAspectRatio(ratio)}
+                        className={
+                          aspectRatio === ratio
+                            ? "ratio-btn active"
+                            : "ratio-btn"
+                        }
+                      >
+                        {ratio}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+
+                <div>
+                  <p className="field-label">Brand Color Mood</p>
+                  <div className="color-row">
+                    {colorSchemes.map((scheme) => (
+                      <button
+                        key={scheme.id}
+                        type="button"
+                        aria-label={scheme.name}
+                        onClick={() => setColorScheme(scheme)}
+                        className={
+                          colorScheme.id === scheme.id
+                            ? "color-chip active"
+                            : "color-chip"
+                        }
+                        style={{ background: scheme.swatch }}
+                      />
+                    ))}
+                  </div>
+                  <p className="field-hint">Selected: {colorScheme.name}</p>
+                </div>
+
+                <div className="detail-span">
+                  <label className="field-label" htmlFor="additional-prompts">
+                    Additional Prompts <span>(optional)</span>
+                  </label>
+                  <textarea
+                    id="additional-prompts"
+                    placeholder="Describe background, lighting, prop ideas, angle, and campaign mood..."
+                    value={additionalPrompts}
+                    onChange={(event) =>
+                      setAdditionalPrompts(event.target.value)
+                    }
+                  />
+                </div>
+              </div>
+
+              <button
+                type="button"
+                className="generate-btn"
+                onClick={handleGenerate}
+                disabled={isLoading}
+              >
+                {isLoading ? "Generating..." : "Generate Marketing Creative"}
+              </button>
+            </div>
           </article>
         </section>
       </main>

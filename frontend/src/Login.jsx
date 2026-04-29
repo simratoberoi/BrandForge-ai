@@ -26,10 +26,11 @@ const Login = () => {
     setIsLoading(true);
 
     try {
+      const apiBase = import.meta.env.VITE_API_BASE_URL || "/_/backend";
       const endpoint =
         state === "login"
-          ? "http://localhost:5000/api/auth/login"
-          : "http://localhost:5000/api/auth/register";
+          ? `${apiBase}/api/auth/login`
+          : `${apiBase}/api/auth/register`;
 
       const payload =
         state === "login"

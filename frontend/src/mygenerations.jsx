@@ -2,7 +2,7 @@ import { useEffect, useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "./mygenerations.css";
 
-const API_BASE = "http://localhost:5000";
+const API_BASE = import.meta.env.VITE_API_BASE_URL || "/_/backend";
 const STORAGE_PREFIX = "brandforge_creative_";
 
 const parseStoredCreatives = () => {

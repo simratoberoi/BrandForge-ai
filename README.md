@@ -83,6 +83,21 @@ npm run dev
 - Frontend: http://localhost:5173
 - Backend: http://localhost:5000
 
+## Vercel Deployment
+
+This repo uses a multi-service setup with Vercel services configured in vercel.json.
+
+Frontend API base:
+
+- Default production route: `/_/backend`
+- Local development: set `VITE_API_BASE_URL=http://localhost:5000`
+
+Create frontend/.env.local with:
+
+```
+VITE_API_BASE_URL=http://localhost:5000
+```
+
 ## Generation Flow
 
 1. User uploads a product image on Generate page.
